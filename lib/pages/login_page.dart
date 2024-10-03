@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:text_app/components/button.dart';
 import 'package:text_app/components/text_field.dart';
+import 'package:text_app/services/auth/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   final void Function()? onTap;
@@ -15,7 +17,22 @@ class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  void signIn() {}
+  void signIn() async {
+    final authService = Provider.of<AuthService>(context, listen: false);
+
+    try {
+      await authService.signInWithEmailandPassword(
+          emailController.text, passwordController.text);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            e.toString(),
+          ),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,10 +85,11 @@ class _LoginPageState extends State<LoginPage> {
                     GestureDetector(
                         onTap: widget.onTap,
                         child: const Text(
-                      'Register Now',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontFamily: 'Monument'),
-                    )),
+                          'Register Now',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Monument'),
+                        )),
                   ],
                 )
               ],
