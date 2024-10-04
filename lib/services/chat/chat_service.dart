@@ -15,7 +15,7 @@ class ChatService extends ChangeNotifier {
     final String currentUserEmail = _firebaseAuth.currentUser!.email.toString();
     final Timestamp timestamp = Timestamp.now();
 
-    //create a new message 
+    //create a new message
     Message newMessage = Message(
         senderId: currentUserId,
         senderEmail: currentUserEmail,
@@ -29,16 +29,24 @@ class ChatService extends ChangeNotifier {
     String chatRoomId = ids.join("_");
 
     //add new message to database
-    await _fireStore.collection("Chat_Rooms").doc(chatRoomId).collection("Messages").add(newMessage.toMap());
-
+    await _fireStore
+        .collection("chat_Rooms")
+        .doc(chatRoomId)
+        .collection("messages")
+        .add(newMessage.toMap());
   }
 
   //get msgs
-  Stream<QuerySnapshot> getMessages (String userId, String otherUserId) {
+  Stream<QuerySnapshot> getMessages(String userId, String otherUserId) {
     List<String> ids = [userId, otherUserId];
     ids.sort();
     String chatRoomId = ids.join("_");
 
-    return _fireStore.collection("Chat_Rooms").doc(chatRoomId).collection("Messages").orderBy("timestamp", descending: false).snapshots();
+    return _fireStore
+        .collection("chat_Rooms")
+        .doc(chatRoomId)
+        .collection("messages")
+        .orderBy("timestamp", descending: false)
+        .snapshots();
   }
 }
