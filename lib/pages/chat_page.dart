@@ -30,22 +30,43 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(widget.receiverUserEmail)),
-      body: Column(
-        children: [
-          Expanded(
-            child: _buildMessageList(),
-          ),
-          _buildMessageInput(),
-
-          const SizedBox(height: 5,),
-        ],
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    backgroundColor: Colors.black,
+    appBar: AppBar(
+      backgroundColor: Colors.transparent,  // Dark background for the app bar
+      elevation: 0,  // Removes the shadow for a flat look
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back_ios, color: Colors.grey[400]),  // Back icon
+        onPressed: () {
+          Navigator.pop(context);  // Action for back button
+        },
       ),
-    );
-  }
+      centerTitle: true,  // Centers the title
+      title: Text(
+        widget.receiverUserEmail,
+        style: TextStyle(
+          color: Colors.grey[300],  // Softer, grey title color
+          fontSize: 20,  // Slightly larger for better readability
+          fontWeight: FontWeight.w400,  // Light weight for a modern feel
+          letterSpacing: 1.0,
+          fontFamily: 'Monument',  // Adds some spacing between letters
+        ),
+      ),
+    ),
+    body: Column(
+      children: [
+        Expanded(
+          child: _buildMessageList(),
+        ),
+        _buildMessageInput(),
+        const SizedBox(height: 5),
+      ],
+    ),
+  );
+}
+
 
   //build message list
   Widget _buildMessageList() {
@@ -57,7 +78,7 @@ class _ChatPageState extends State<ChatPage> {
           return Text('Error${snapshot.error}');
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Text('Loading..');
+          return const Center(child: CircularProgressIndicator(),);
         }
 
         return ListView(
@@ -91,7 +112,7 @@ class _ChatPageState extends State<ChatPage> {
                   ? MainAxisAlignment.end
                   : MainAxisAlignment.start,
           children: [
-            Text(data['senderEmail'] ?? 'Unknown Sender'),
+            Text(data['senderEmail'] ?? 'Unknown Sender', style: TextStyle(color: Colors.grey[400], fontSize: 12,fontFamily: 'Monument'),),
             const SizedBox(height: 3,),
             ChatBubble(message: data['message']),
           ],
@@ -118,6 +139,7 @@ class _ChatPageState extends State<ChatPage> {
               icon: const Icon(
                 Icons.arrow_upward,
                 size: 40,
+                color: Colors.white,
               ))
         ],
       ),

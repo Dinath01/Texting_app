@@ -16,15 +16,22 @@ class MyTextField extends StatelessWidget {
     return TextField(
       controller: controller,
       obscureText: obscureText,
+      style: const TextStyle(color: Colors.white, fontFamily: 'Monument'), 
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.grey, width: 1),
+          borderSide: const BorderSide(color: Colors.grey, width: 1),
+          borderRadius: BorderRadius.circular(20), 
         ),
-        fillColor: Colors.grey[900],
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.white, width: 1.5), 
+          borderRadius: BorderRadius.circular(20),
+        ),
+        fillColor: Colors.grey[800], 
         filled: true,
         hintText: hintText,
-        hintStyle: const TextStyle(color: Colors.white, fontFamily: 'Monument'),
-      )
+        hintStyle: const TextStyle(color: Colors.grey, fontFamily: 'Monument'), 
+        contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+      ),
     );
   }
 }
