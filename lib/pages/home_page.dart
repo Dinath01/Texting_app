@@ -23,19 +23,18 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black, // Set background color to black
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.transparent, // Transparent AppBar
-        elevation: 0, // No shadow
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         title: Text(
           'Chats',
-          style: TextStyle(color: Colors.grey[400], fontFamily: 'Monument'), // Modern title color
+          style: TextStyle(color: Colors.grey[400], fontFamily: 'Monument'),
         ),
         actions: [
           IconButton(
             onPressed: signOut,
-            icon:
-                Icon(Icons.logout_sharp, color: Colors.grey[400]), // Icon color
+            icon: Icon(Icons.logout_sharp, color: Colors.grey[400]),
           )
         ],
       ),
@@ -52,8 +51,7 @@ class _HomePageState extends State<HomePage> {
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-              child: CircularProgressIndicator()); // Loading indicator
+          return const Center(child: CircularProgressIndicator());
         }
 
         return ListView(
@@ -65,45 +63,44 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-Widget _buildUserListItem(DocumentSnapshot document) {
-  Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+  Widget _buildUserListItem(DocumentSnapshot document) {
+    Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
 
-  if (_auth.currentUser!.email != data['email']) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0), // Add padding around each item
-      child: ListTile(
-        contentPadding: EdgeInsets.all(10), // Padding inside the ListTile
-        tileColor: Colors.grey[850],
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        leading: CircleAvatar(
-          backgroundColor: Colors.transparent, // Circle color
-          child: Text(
-            data['email'][0].toUpperCase(), // First letter of the email
-            style: TextStyle(color: Colors.white, fontSize: 20,fontFamily: 'Monument'), // Text style for the letter
+    if (_auth.currentUser!.email != data['email']) {
+      return Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: ListTile(
+          contentPadding: EdgeInsets.all(10),
+          tileColor: Colors.grey[850],
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
           ),
-        ),
-        title: Text(
-          data['email'],
-          style: TextStyle(color: Colors.white, fontFamily: 'Monument',fontSize: 14),
-        ),
-        trailing: Icon(Icons.arrow_forward_ios, color: Colors.grey[400]), // Right arrow icon
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ChatPage(
-                receiverUserEmail: data['email'],
-                receiverUserID: data['uid'],
-              ),
+          leading: CircleAvatar(
+            backgroundColor: Colors.transparent,
+            child: Text(
+              data['username'][0].toUpperCase(), // First letter of the username
+              style: TextStyle(color: Colors.white, fontSize: 20, fontFamily: 'Monument'),
             ),
-          );
-        },
-      ),
-    );
-  } else {
-    return Container();
+          ),
+          title: Text(
+            data['username'], // Display the username instead of the email
+            style: TextStyle(color: Colors.white, fontFamily: 'Monument', fontSize: 14),
+          ),
+          trailing: Icon(Icons.arrow_forward_ios, color: Colors.grey[400]),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChatPage(
+                  receiverUserID: data['uid'], // Only pass the receiverUserID
+                ),
+              ),
+            );
+          },
+        ),
+      );
+    } else {
+      return Container();
+    }
   }
-}
 }

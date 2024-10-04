@@ -17,6 +17,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final ConfirmPasswordController = TextEditingController();
+  final usernameController = TextEditingController();
 
   void signUp() async {
     if (passwordController.text != ConfirmPasswordController.text) {
@@ -28,8 +29,8 @@ class _RegisterPageState extends State<RegisterPage> {
     final authService = Provider.of<AuthService>(context, listen: false);
 
     try {
-      await authService.signUpWithEmailandPassword(
-          emailController.text, passwordController.text);
+      await authService.signUpWithEmailandPassword(emailController.text,
+          passwordController.text, usernameController.text);
     } catch (e) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(e.toString())));
@@ -44,63 +45,73 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25.0),
-            child: Column(
-              children: [
-                const SizedBox(height: 120),
-                Icon(
-                  Icons.messenger,
-                  size: 100,
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  "Lets Get You Started!",
-                  style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Monument'),
-                ),
-                const SizedBox(height: 50),
-                MyTextField(
-                    controller: emailController,
-                    hintText: "Email",
-                    obscureText: false),
-                const SizedBox(height: 3),
-                MyTextField(
-                    controller: passwordController,
-                    hintText: "Password",
-                    obscureText: true),
-                const SizedBox(height: 3),
-                MyTextField(
-                    controller: ConfirmPasswordController,
-                    hintText: "Confirm Password",
-                    obscureText: true),
-                const SizedBox(
-                  height: 25,
-                ),
-                MyButton(onTap: signUp, text: "Sign Up"),
-                const SizedBox(
-                  height: 25,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Already a Member?',
-                      style: TextStyle(fontFamily: 'Monument'),
-                    ),
-                    const SizedBox(width: 4),
-                    GestureDetector(
-                      onTap: widget.onTap,
-                      child: const Text(
-                        'Login Now',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Monument'),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center, // Aligns the column items in the center
+                crossAxisAlignment: CrossAxisAlignment.center, // Aligns the column items in the center horizontally
+                children: [
+                  const SizedBox(height: 30),
+                  Icon(
+                    Icons.messenger,
+                    size: 100,
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    "Lets Get You Started!",
+                    style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Monument'),
+                        textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 50),
+                  MyTextField(
+                      controller: usernameController,
+                      hintText: "Username",
+                      obscureText: false),
+                  const SizedBox(height: 3),
+                  MyTextField(
+                      controller: emailController,
+                      hintText: "Email",
+                      obscureText: false),
+                  const SizedBox(height: 3),
+                  MyTextField(
+                      controller: passwordController,
+                      hintText: "Password",
+                      obscureText: true),
+                  const SizedBox(height: 3),
+                  MyTextField(
+                      controller: ConfirmPasswordController,
+                      hintText: "Confirm Password",
+                      obscureText: true),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  MyButton(onTap: signUp, text: "Sign Up"),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Already a Member?',
+                        style: TextStyle(fontFamily: 'Monument'),
                       ),
-                    ),
-                  ],
-                )
-              ],
+                      const SizedBox(width: 4),
+                      GestureDetector(
+                        onTap: widget.onTap,
+                        child: const Text(
+                          'Login Now',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Monument'),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ),
